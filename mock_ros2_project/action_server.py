@@ -43,6 +43,8 @@ class ActionServerNode(Node):
             
             self.get_logger().info(f'Feedback: {feedback_msg.partial_sequence}')
             goal_handle.publish_feedback(feedback_msg)
+            self.get_logger().info(f'Feedback success')
+
             
             time.sleep(1)  # Simulate work
         

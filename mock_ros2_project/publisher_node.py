@@ -18,7 +18,7 @@ class PublisherNode(Node):
         super().__init__('publisher_node')
         
         # Create publisher
-        self.publisher_ = self.create_publisher(String, 'topic', 10)
+        self.publisher_ = self.create_publisher(String, 'send_topic', 10)
         
         # Create timer to publish messages periodically
         timer_period = 0.5  # seconds
