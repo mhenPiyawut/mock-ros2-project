@@ -12,12 +12,17 @@ from example_interfaces.srv import AddTwoInts
 
 
 class ServiceServer(Node):
-    """Service server node that provides addition service."""
+    """Service server node that provides addition service.
     
-    def __init__(self):
+    This node creates a service server that accepts two integers
+    and returns their sum using the AddTwoInts service interface.
+    """
+    
+    def __init__(self) -> None:
+        """Initialize the service server node."""
         super().__init__('service_server')
         
-        # Create service
+        # Create service for adding two integers
         self.srv = self.create_service(
             AddTwoInts,
             'add_two_ints',
@@ -26,8 +31,17 @@ class ServiceServer(Node):
         
         self.get_logger().info('Service server ready to add two integers.')
 
-    def add_two_ints_callback(self, request, response):
-        """Service callback that adds two integers."""
+    def add_two_ints_callback(self, request: AddTwoInts.Request, 
+                             response: AddTwoInts.Response) -> AddTwoInts.Response:
+        """Service callback that adds two integers.
+        
+        Args:
+            request: Service request containing two integers (a and b)
+            response: Service response to populate with the sum
+            
+        Returns:
+            AddTwoInts.Response: Response containing the sum of the two integers
+        """
         response.sum = request.a + request.b
         
         self.get_logger().info(
@@ -38,18 +52,22 @@ class ServiceServer(Node):
         return response
 
 
-def main(args=None):
-    """Main function to run the service server."""
+def main(args=None) -> None:
+    """Main function to run the service server.
+    
+    Args:
+        args: Command line arguments (optional)
+    """
     rclpy.init(args=args)
     
-    service_server = ServiceServer()
+    service_server_node = ServiceServer()
     
     try:
-        rclpy.spin(service_server)
+        rclpy.spin(service_server_node)
     except KeyboardInterrupt:
         pass
     finally:
-        service_server.destroy_node()
+        service_server_node.destroy_node()
         rclpy.shutdown()
 
 
