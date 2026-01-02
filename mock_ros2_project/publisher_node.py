@@ -3,7 +3,7 @@
 ROS2 Publisher Node Example
 
 This node demonstrates how to create a simple publisher that sends
-string messages at regular intervals.
+string messages at regular intervals to demonstrate basic pub/sub communication.
 """
 
 import rclpy
@@ -12,25 +12,33 @@ from std_msgs.msg import String
 
 
 class PublisherNode(Node):
-    """Simple publisher node that publishes string messages."""
+    """Simple publisher node that publishes string messages.
     
-    def __init__(self):
+    This node creates a publisher that sends string messages containing
+    a counter value at regular intervals.
+    """
+    
+    def __init__(self) -> None:
+        """Initialize the publisher node."""
         super().__init__('publisher_node')
         
-        # Create publisher
-        self.publisher_ = self.create_publisher(String, 'topic', 10)
+        # Create publisher for string messages
+        self.publisher_ = self.create_publisher(String, 'send_topic', 10)
         
         # Create timer to publish messages periodically
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         
-        # Initialize counter
+        # Initialize message counter
         self.i = 0
         
         self.get_logger().info('Publisher node has been started.')
 
-    def timer_callback(self):
-        """Timer callback function that publishes messages."""
+    def timer_callback(self) -> None:
+        """Timer callback function that publishes messages.
+        
+        Creates and publishes a string message with an incrementing counter.
+        """
         msg = String()
         msg.data = f'Hello World: {self.i}'
         
@@ -40,8 +48,12 @@ class PublisherNode(Node):
         self.i += 1
 
 
-def main(args=None):
-    """Main function to run the publisher node."""
+def main(args=None) -> None:
+    """Main function to run the publisher node.
+    
+    Args:
+        args: Command line arguments (optional)
+    """
     rclpy.init(args=args)
     
     publisher_node = PublisherNode()
